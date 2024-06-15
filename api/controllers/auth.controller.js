@@ -57,7 +57,6 @@ export const login = async(req,res)=>{
         }
 
         //generate a token and send it to the user
-
         // res.setHeader("Set-Cookie" , "test=" +"myvalue").json("success")
  
          const age = 1000*60*60*24*7
@@ -68,6 +67,8 @@ export const login = async(req,res)=>{
         {expiresIn:age}
     );
 
+      
+     const  {password:userpassword , ...userInfo}= user;
 
         res.
         cookie("token" , token,{
@@ -77,14 +78,14 @@ export const login = async(req,res)=>{
 
         })
         .status(200)
-        .json({message: 'Login Successfully'})
+        .json(userInfo)
 
         
-    } catch (error) {
+    } catch (err) {
         console.log(err);
-      res.status(500).json({ message: "Failed to login!" });
+      res.status(500).json({message:"failed to login"} );
         
-    }
+    };
     
 } 
 
