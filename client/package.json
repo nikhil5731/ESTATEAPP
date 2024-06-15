@@ -14,9 +14,11 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.23.1",
     "saas": "^1.0.0",
-    "sass": "^1.77.5"
+    "sass": "^1.77.5",
+    "timeagojs": "^1.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
