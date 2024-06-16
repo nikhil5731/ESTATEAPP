@@ -1,95 +1,84 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma.js";
-import jwt from "jsonwebtoken"
-
-
 
 export const register = async (req, res) => {
-    const { username, email, password } = req.body;
-  
-    try {
-      // HASH THE PASSWORD
-  
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      console.log(hashedPassword);
-  
-      // CREATE A NEW USER AND SAVE TO DB
-      const newUser = await prisma.user.create({
-        data: {
-          username,
-          email,
-          password: hashedPassword,
-        },
-      });
-  
-      console.log(newUser);
-  
-      res.status(201).json({ message: "User created successfully" });
+  const { username, email, password } = req.body;
 
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({ message: "Failed to create user!" });
-    }
-  };
+  try {
+    // HASH THE PASSWORD
 
-export const login = async(req,res)=>{
-    const {username , password} = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    try {
-    
-        //check if the user exist :
+    console.log(hashedPassword);
 
-        const user = await prisma.user.findUnique({
-            where:{username:username}
-        })
+    // CREATE A NEW USER AND SAVE TO DB
+    const newUser = await prisma.user.create({
+      data: {
+        username,
+        email,
+        password: hashedPassword,
+      },
+    });
 
-        if(!user){
-            return res.status(401).json({message:'invalid Credentials'})
-        }
+    console.log(newUser);
 
-        //check if the password is correct :
+    res.status(201).json({ message: "User created successfully" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to create user!" });
+  }
+};
 
-        const isPasswordValid = await bcrypt.compare(password , user.password);
+export const login = async (req, res) => {
+  const { username, password } = req.body;
 
-        if(!isPasswordValid){
-            return res.status(401).json({message:'invalid Credentials'})
-        }
+  try {
+    // CHECK IF THE USER EXISTS
 
-        //generate a token and send it to the user
-        // res.setHeader("Set-Cookie" , "test=" +"myvalue").json("success")
- 
-         const age = 1000*60*60*24*7
+    const user = await prisma.user.findUnique({
+      where: { username },
+    });
 
-        const token = jwt.sign({
-            id:user.id,
-            isAdmin:false,
-        },process.env.JWT_SECRET_KEY , 
-        {expiresIn:age}
+    if (!user) return res.status(400).json({ message: "Invalid Credentials!" });
+
+    // CHECK IF THE PASSWORD IS CORRECT
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid)
+      return res.status(400).json({ message: "Invalid Credentials!" });
+
+    // GENERATE COOKIE TOKEN AND SEND TO THE USER
+
+    // res.setHeader("Set-Cookie", "test=" + "myValue").json("success")
+    const age = 1000 * 60 * 60 * 24 * 7;
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        isAdmin: false,
+      },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: age }
     );
 
-      
-     const  {password:userpassword , ...userInfo}= user;
+    const { password: userPassword, ...userInfo } = user;
 
-        res.
-        cookie("token" , token,{
-            httpOnly:true,
-            // secure:true
-            maxAge:age,
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        // secure:true,
+        maxAge: age,
+      })
+      .status(200)
+      .json(userInfo);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to login!" });
+  }
+};
 
-        })
-        .status(200)
-        .json(userInfo)
-
-        
-    } catch (err) {
-        console.log(err);
-      res.status(500).json({message:"failed to login"} );
-        
-    };
-    
-} 
-
-export const logout = (req,res)=>{
-    res.clearCookie("token").json({message:"Logout Successfullyy"})
-} 
+export const logout = (req, res) => {
+  res.clearCookie("token").status(200).json({ message: "Logout Successful" });
+};
