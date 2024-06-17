@@ -27,6 +27,18 @@ function SinglePage() {
     }
   };
 
+  const handleMessage = async () => {
+    try {
+      apiRequest.post("/chats/", {
+        // userId: currentUser.id,
+        receiverId: post.userId,
+      });
+      navigate("/profile");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="singlePage">
       <div className="details">
@@ -43,7 +55,7 @@ function SinglePage() {
                 <div className="price">$ {post.price}</div>
               </div>
               <div className="user">
-                <img src={post.user.avatar || "noavatar.jpg"} alt="" />
+                <img src={post.user.avatar} alt="" />
                 <span>{post.user.username}</span>
               </div>
             </div>
@@ -139,7 +151,7 @@ function SinglePage() {
             <Map items={[post]} />
           </div>
           <div className="buttons">
-            <button>
+            <button onClick={handleMessage}>
               <img src="/chat.png" alt="" />
               Send a Message
             </button>
