@@ -23,6 +23,7 @@ app.use(cors({
   'exposedHeaders': ['sessionId'],
   'origin': '*',
   'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
   'preflightContinue': false
 }));
 
