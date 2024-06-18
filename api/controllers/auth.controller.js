@@ -67,12 +67,12 @@ export const login = async (req, res) => {
 
     res
       .cookie("token", token, {
-        httpOnly: true,
-        secure: true, // Set to false for local development
-        maxAge: age,
-        domain: "localhost", // Set the domain to localhost
-        path: "/", // Path where the cookie is accessible
-        SameSite: "Lax", // Required for cross-site cookies
+        domain: "localhost", // Set the domain for the cookie
+        path: "/", // Set the path for the cookie
+        port: 5173, // Set the port for the cookie
+        secure: false, // Set to true if you're using HTTPS
+        httpOnly: false, // Set to false to allow client-side access
+        SameSite: "None", // Set the SameSite attribute to allow cross-site requests
       })
       .status(200)
       .json(userInfo);
