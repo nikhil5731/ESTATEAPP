@@ -12,11 +12,6 @@ import "dotenv/config";
 const app = express();
 
 app.use(cors({ origin: process.env.ClIENT_URL, credentials: true }));
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:5173"); // Replace with your frontend URL
-  res.header("Access-Control-Allow-Credentials", "true");
-  next();
-});
 
 app.use(express.json());
 app.use(cookieParser());
