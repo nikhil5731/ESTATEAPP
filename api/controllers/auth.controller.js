@@ -67,10 +67,9 @@ export const login = async (req, res) => {
 
     res
       .cookie("token", token, {
-        domain: "localhost", // Set the domain for the cookie
+        domain: ".onrender.com", // Set the domain for the cookie
         path: "/", // Set the path for the cookie
-        port: 5173, // Set the port for the cookie
-        secure: true, // Set to true if you're using HTTPS
+        secure: true, // Set to true since you're using HTTPS
         httpOnly: false, // Set to false to allow client-side access
         sameSite: "none", // Set the SameSite attribute to allow cross-site requests
       })
