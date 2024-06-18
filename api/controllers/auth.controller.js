@@ -71,7 +71,7 @@ export const login = async (req, res) => {
         secure: true, // Ensures the cookie is only sent over HTTPS
         sameSite: "none", // Allows cross-site requests
         maxAge: age, // Expiration time in milliseconds
-        domain: "http://localhost:5173", // Set the domain for the cookie
+        domain: "onrender.com", // Set the domain for the cookie
         path: "/", // Set the path for the cookie
       })
       .status(200)
