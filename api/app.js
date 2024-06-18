@@ -10,7 +10,7 @@ import messageRoute from "./routes/message.route.js";
 
 const app = express();
 
-//  app.use(cors({ origin: "*" , credentials: true}));
+app.use(cors({ origin: process.env.ClIENT_URL , credentials: true}));
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
 //   res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
@@ -18,15 +18,15 @@ const app = express();
 //   next();
 // });
 
-app.use(cors({
-  'allowedHeaders': ['sessionId', 'Content-Type'],
-  'exposedHeaders': ['sessionId'],
-  'origin': '*',
-  'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  'preflightContinue': false
+// app.use(cors({
+//   'allowedHeaders': ['sessionId', 'Content-Type'],
+//   'exposedHeaders': ['sessionId'],
+//   'origin': '*',
+//   'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//   credentials: true,
+//   'preflightContinue': false
   
-}));
+// }));
 
 
 app.use(express.json());
