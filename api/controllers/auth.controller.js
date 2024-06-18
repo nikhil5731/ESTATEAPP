@@ -67,11 +67,12 @@ export const login = async (req, res) => {
 
     res
       .cookie("token", token, {
+        httpOnly: true, // Ensures the cookie is only accessible via HTTP(S)
+        secure: true, // Ensures the cookie is only sent over HTTPS
+        sameSite: "none", // Allows cross-site requests
+        maxAge: age, // Expiration time in milliseconds
         domain: ".onrender.com", // Set the domain for the cookie
         path: "/", // Set the path for the cookie
-        secure: true, // Set to true since you're using HTTPS
-        httpOnly: false, // Set to false to allow client-side access
-        sameSite: "none", // Set the SameSite attribute to allow cross-site requests
       })
       .status(200)
       .json(userInfo);
