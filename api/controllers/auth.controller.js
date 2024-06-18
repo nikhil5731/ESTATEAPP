@@ -68,11 +68,11 @@ export const login = async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: false, // Set to false for local development
+        secure: true, // Set to false for local development
         maxAge: age,
         domain: "localhost", // Set the domain to localhost
         path: "/", // Path where the cookie is accessible
-        sameSite: "None", // Required for cross-site cookies
+        SameSite: "Lax", // Required for cross-site cookies
       })
       .status(200)
       .json(userInfo);
