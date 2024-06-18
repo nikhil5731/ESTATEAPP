@@ -72,7 +72,7 @@ export const login = async (req, res) => {
         port: 5173, // Set the port for the cookie
         secure: false, // Set to true if you're using HTTPS
         httpOnly: false, // Set to false to allow client-side access
-        SameSite: "None", // Set the SameSite attribute to allow cross-site requests
+        SameSite: None, // Set the SameSite attribute to allow cross-site requests
       })
       .status(200)
       .json(userInfo);
